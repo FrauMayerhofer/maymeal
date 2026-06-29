@@ -1,33 +1,30 @@
-import getUser from "@/features/auth/actions/getUser";
+import { updateSession } from "@/lib/supabase/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const ROUTES = {
   login: "/login",
   register: "/register",
-  afterLogin: "/",
+  afterLogin: "/recipes",
 };
-const PROTECTED_ROUTES: string[] = [ROUTES.afterLogin];
-const AUTH_ROUTES: string[] = [ROUTES.login, ROUTES.register];
 
-export async function proxy(request: NextRequest) {
-  const response = NextResponse.next({ request });
+const AUTH_ROUTES = [ROUTES.login, ROUTES.register];
+const PROTECTED_PREFIXES = ["/recipes", "/planner", "/profile"];
 
-  let user = null;
-  try {
-    user = await getUser();
-  } catch {
-    // no valid session — treat as unauthenticated
-  }
+export default async function proxy(request: NextRequest) {
+  const { response, user } = await updateSession(request);
 
   const pathname = request.nextUrl.pathname;
   const isAuthRoute = AUTH_ROUTES.includes(pathname);
+  const isProtectedRoute = PROTECTED_PREFIXES.some((prefix) =>
+    pathname.startsWith(prefix),
+  );
 
   if (isAuthRoute && user) {
     return NextResponse.redirect(new URL(ROUTES.afterLogin, request.url));
   }
 
-  if (!isAuthRoute && !user) {
+  if (isProtectedRoute && !user) {
     return NextResponse.redirect(new URL(ROUTES.login, request.url));
   }
 

@@ -7,9 +7,8 @@ import { RecipePayload } from "../schemas/recipe";
 export function NewRecipeForm() {
   const { mutate, isPending } = useCreateRecipe();
 
-  function handleSubmit(payload: RecipePayload, _imageFile: File | null) {
-    // TODO: upload _imageFile to Supabase Storage, then set payload.imageUrl
-    mutate(payload);
+  function handleSubmit(payload: RecipePayload, imageFile: File | null) {
+    mutate({ payload, imageFile });
   }
 
   return (

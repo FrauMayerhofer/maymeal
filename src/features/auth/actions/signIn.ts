@@ -2,7 +2,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { SignInInput } from "../schemas/sign-in";
-
 export default async function signIn({ email, password }: SignInInput) {
   const cookieStore = await cookies();
   const supabase = createClient(cookieStore);
@@ -13,6 +12,5 @@ export default async function signIn({ email, password }: SignInInput) {
   });
 
   if (error) throw error;
-
   return data;
 }

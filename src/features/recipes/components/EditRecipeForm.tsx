@@ -13,9 +13,8 @@ interface EditRecipeFormProps {
 export function EditRecipeForm({ recipe }: EditRecipeFormProps) {
   const { mutate, isPending } = useEditRecipe(recipe.id);
 
-  function handleSubmit(payload: RecipePayload, _imageFile: File | null) {
-    // TODO: upload _imageFile to Supabase Storage, then set payload.imageUrl
-    mutate(payload);
+  function handleSubmit(payload: RecipePayload, imageFile: File | null) {
+    mutate({ payload, imageFile });
   }
 
   return (

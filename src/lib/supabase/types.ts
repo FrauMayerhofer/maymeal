@@ -20,25 +20,6 @@ type Rel = {
 export interface Database {
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          id: string;
-          name: string;
-          avatar_url: string | null;
-          created_at: string;
-        };
-        Insert: {
-          id: string;
-          name: string;
-          avatar_url?: string | null;
-          created_at?: string;
-        };
-        Update: {
-          name?: string;
-          avatar_url?: string | null;
-        };
-        Relationships: Rel[];
-      };
       recipes: {
         Row: {
           id: string;

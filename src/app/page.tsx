@@ -1,37 +1,106 @@
-"use client";
+import Link from "next/link";
+import { ChefHat, CalendarDays, BookOpen, ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ROUTES } from "@/constants/routes";
+import getUser from "@/features/auth/actions/getUser";
 
-import { ChefHat, CalendarDays, BookOpen } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { RecipeGrid } from "@/features/recipes/components/RecipeGrid";
-import { WeeklyPlanner } from "@/features/recipes/components/WeeklyPlanner";
+export default async function Home() {
+  const user = await getUser().catch(() => null);
 
-export default function Home() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-10 border-b bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    <div className="min-h-screen flex flex-col bg-background">
+      <header className="border-b">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <ChefHat className="size-4" />
             </div>
-            <div>
-              <h1 className="text-sm font-bold leading-none">MayMeal</h1>
-              <p className="text-xs text-muted-foreground">
-                Deine Rezepte & Wochenplanung
-              </p>
-            </div>
+            <span className="font-bold text-lg">MAYMeal</span>
           </div>
-          <Avatar className="size-8">
-            <AvatarFallback className="text-xs bg-primary/10 text-primary font-semibold">
-              AM
-            </AvatarFallback>
-          </Avatar>
+          {user ? (
+            <Button asChild>
+              <Link href={ROUTES.afterLogin}>Zu den Rezepten</Link>
+            </Button>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" asChild>
+                <Link href={ROUTES.login}>Anmelden</Link>
+              </Button>
+              <Button asChild>
+                <Link href={ROUTES.register}>Registrieren</Link>
+              </Button>
+            </div>
+          )}
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 py-6">f</main>
+      <main className="flex-1">
+        {/* Hero */}
+        <section className="mx-auto max-w-5xl px-6 py-24 text-center">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            Kochen mit Leidenschaft
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
+            Sammle deine Lieblingsrezepte, plane deine Woche und behalte den
+            Überblick — alles an einem Ort.
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Button size="lg" asChild>
+              <Link href={ROUTES.register}>Kostenlos starten</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link href={ROUTES.login}>Bereits registriert?</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Features */}
+        <section className="border-t bg-muted/40">
+          <div className="mx-auto max-w-5xl px-6 py-20">
+            <h2 className="mb-12 text-center text-2xl font-bold">
+              Alles, was du brauchst
+            </h2>
+            <div className="grid gap-8 sm:grid-cols-3">
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <BookOpen className="size-6" />
+                </div>
+                <h3 className="font-semibold">Rezeptsammlung</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Füge eigene Rezepte hinzu, kategorisiere sie und durchsuche
+                  sie blitzschnell.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <CalendarDays className="size-6" />
+                </div>
+                <h3 className="font-semibold">Wochenplanung</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Plane Frühstück, Mittag und Abendessen für jede Woche und
+                  behalte Kalorien im Blick.
+                </p>
+              </div>
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <ShoppingCart className="size-6" />
+                </div>
+                <h3 className="font-semibold">Einkaufsliste</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Generiere automatisch eine Einkaufsliste aus deinem Wochenplan
+                  — kein Vergessen mehr.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t">
+        <div className="mx-auto max-w-5xl px-6 py-6 text-center text-sm text-muted-foreground">
+          © 2026 MAYMeal. Alle Rechte vorbehalten.
+        </div>
+      </footer>
     </div>
   );
 }

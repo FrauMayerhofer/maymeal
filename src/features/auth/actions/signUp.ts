@@ -8,7 +8,7 @@ export default async function signUp({ email, password }: SignUpInput) {
   const supabase = createClient(cookieStore);
 
   const { data, error } = await supabase.auth.signUp({ email, password });
-  if (error) throw error;
 
+  if (error) throw error;
   return data;
 }

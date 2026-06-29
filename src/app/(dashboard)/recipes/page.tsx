@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { RecipeGrid } from "@/features/recipes/components/RecipeGrid";
+import { RecipeGridSkeleton } from "@/features/recipes/components/RecipeGridSkeleton";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -23,7 +24,7 @@ export default function RecipePage() {
         </Button>
       </div>
       <Separator className="mb-5" />
-      <Suspense>
+      <Suspense fallback={<RecipeGridSkeleton />}>
         <RecipeGrid />
       </Suspense>
     </div>

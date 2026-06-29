@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import signUp from "../actions/signUp";
 import { SignUpInput } from "../schemas/sign-up";
+import { ROUTES } from "@/constants/routes";
 
 export function useSignUp() {
   const router = useRouter();
@@ -16,7 +17,7 @@ export function useSignUp() {
     },
     onSuccess: () => {
       toast.success("Konto erstellt! Bitte bestätige deine E-Mail-Adresse.");
-      router.push("/sign-in");
+      router.push(ROUTES.login);
     },
   });
 }

@@ -1,4 +1,5 @@
 import { LoginForm } from "@/features/auth/forms/LoginForm";
+import { LoginFormSkeleton } from "@/features/auth/forms/LoginFormSkeleton";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -11,7 +12,7 @@ export default function LoginPage() {
       <p className="text-muted-foreground mb-6">
         Melde dich mit deinem Konto an
       </p>
-      <Suspense>
+      <Suspense fallback={<LoginFormSkeleton />}>
         <LoginForm />
       </Suspense>
     </div>

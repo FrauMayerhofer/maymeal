@@ -1,7 +1,7 @@
 export const ROUTES = {
   login: "/login",
   register: "/register",
-  afterLogin: "/",
+  afterLogin: "/recipes",
 };
 
 export const PROTECTED_ROUTES: string[] = [ROUTES.afterLogin];

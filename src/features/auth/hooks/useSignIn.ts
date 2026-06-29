@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import signIn from "../actions/signIn";
 import { SignInInput } from "../schemas/sign-in";
+import { ROUTES } from "@/constants/routes";
 
 export function useSignIn() {
   const router = useRouter();
@@ -15,7 +16,8 @@ export function useSignIn() {
       toast.error(`Anmeldung fehlgeschlagen: ${error.message}`);
     },
     onSuccess: () => {
-      router.push("/");
+      toast.success(`Anmeldung war erfolgreich!`);
+      router.push(ROUTES.afterLogin);
     },
   });
 }
