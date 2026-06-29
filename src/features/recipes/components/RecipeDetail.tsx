@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Recipe } from "../types";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share2, Check } from "lucide-react";
 import Link from "next/link";
 import { formatAmount } from "../utils/formatAmount";
 import HeroCard from "./RecipeDetail/HeroCard";
@@ -10,6 +10,8 @@ import MacroCard from "./RecipeDetail/MacroCard";
 import ServingsStepper from "./RecipeDetail/ServingsStepper";
 import StatsCard from "./RecipeDetail/StatsCard";
 import { RecipeOwnerActions } from "./RecipeOwnerActions";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 interface RecipeDetailProps {
   recipe: Recipe;
@@ -18,21 +20,76 @@ interface RecipeDetailProps {
 
 export function RecipeDetail({ recipe, currentUserId }: RecipeDetailProps) {
   const [servings, setServings] = useState(recipe.servings);
+  const [copied, setCopied] = useState(false);
 
   const scale = servings / recipe.servings;
   const scaledCalories = Math.round(recipe.calories * scale);
   const isOwner = !!currentUserId && currentUserId === recipe.authorId;
 
+  function buildShareText() {
+    const url = window.location.href;
+    const ingredientLines = recipe.ingredients
+      .map((ing) => `• ${formatAmount(ing.amount * scale)} ${ing.unit} ${ing.name}`)
+      .join("\n");
+    const instructionLines = recipe.instructions
+      .map((step, i) => `${i + 1}. ${step}`)
+      .join("\n");
+
+    return [
+      `🍽️ ${recipe.title}`,
+      ``,
+      recipe.description,
+      ``,
+      `📋 Infos`,
+      `• Kategorie: ${recipe.category}`,
+      `• Schwierigkeit: ${recipe.difficulty}`,
+      `• Dauer: ${recipe.duration} Min.`,
+      `• Portionen: ${servings}`,
+      `• Kalorien: ${scaledCalories} kcal`,
+      ``,
+      `🥗 Makros (pro Portion)`,
+      `• Protein: ${Math.round(recipe.macros.protein * scale)} g`,
+      `• Kohlenhydrate: ${Math.round(recipe.macros.carbs * scale)} g`,
+      `• Fett: ${Math.round(recipe.macros.fat * scale)} g`,
+      ``,
+      `🛒 Zutaten (für ${servings} ${servings === 1 ? "Portion" : "Portionen"})`,
+      ingredientLines,
+      ``,
+      `👨‍🍳 Zubereitung`,
+      instructionLines,
+      ``,
+      `🔗 ${url}`,
+    ].join("\n");
+  }
+
+  async function handleShare() {
+    const text = buildShareText();
+    if (navigator.share) {
+      await navigator.share({ title: recipe.title, text });
+    } else {
+      await navigator.clipboard.writeText(text);
+      toast.success("Rezept kopiert!");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  }
+
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Back link */}
-      <Link
-        href="/recipes"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <ArrowLeft className="size-4" />
-        Zurück zur Rezeptsammlung
-      </Link>
+      {/* Back link + Share */}
+      <div className="flex items-center justify-between">
+        <Link
+          href="/recipes"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="size-4" />
+          Zurück zur Rezeptsammlung
+        </Link>
+        <Button variant="outline" size="sm" onClick={handleShare} className="gap-1.5">
+          {copied ? <Check className="size-4" /> : <Share2 className="size-4" />}
+          Teilen
+        </Button>
+      </div>
 
       {/* Hero Card */}
       <HeroCard recipe={recipe} />

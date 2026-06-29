@@ -1,4 +1,3 @@
-import LogoutButton from "@/features/auth/components/LogoutButton";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import getUser from "@/features/auth/actions/getUser";
@@ -20,9 +19,8 @@ export async function DashboardHeader() {
           <AvatarFallback className="text-xs">{initials}</AvatarFallback>
         </Avatar>
         <span className="text-sm text-muted-foreground hidden sm:block">
-          {user?.email}
+          {user?.user_metadata.username ?? user?.email}
         </span>
-        <LogoutButton />
       </div>
     </header>
   );

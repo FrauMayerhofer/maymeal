@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -33,8 +34,8 @@ export function WeeklyPlannerSkeleton() {
 
       {/* Weekly grid */}
       <ScrollArea className="w-full">
-        <div className="min-w-175">
-          <div className="grid grid-cols-[80px_repeat(7,1fr)] gap-5">
+        <div className="md:min-w-175">
+          <div className="grid grid-cols-[80px_repeat(7,calc(100vw-8rem))] md:grid-cols-[80px_repeat(7,1fr)] gap-5">
             {/* Header row */}
             <div />
             {Array.from({ length: DAYS }).map((_, i) => (
@@ -46,22 +47,22 @@ export function WeeklyPlannerSkeleton() {
 
             {/* Meal slot rows */}
             {Array.from({ length: SLOTS }).map((_, slotIdx) => (
-              <>
-                <div key={`label-${slotIdx}`} className="flex items-start pt-1">
+              <Fragment key={slotIdx}>
+                <div className="flex items-start pt-1">
                   <Skeleton className="h-3 w-14" />
                 </div>
                 {Array.from({ length: DAYS }).map((_, dayIdx) => (
                   <Skeleton
-                    key={`cell-${slotIdx}-${dayIdx}`}
+                    key={dayIdx}
                     className="h-16 w-full rounded-lg"
                   />
                 ))}
                 {slotIdx < SLOTS - 1 && (
-                  <div key={`sep-${slotIdx}`} className="col-span-8 my-1">
+                  <div className="col-span-8 my-1">
                     <Separator />
                   </div>
                 )}
-              </>
+              </Fragment>
             ))}
           </div>
         </div>

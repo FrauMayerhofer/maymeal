@@ -69,6 +69,7 @@ export interface Database {
           carbs?: number;
           fat?: number;
           image_url?: string | null;
+          author_name?: string;
         };
         Relationships: Rel[];
       };
@@ -146,6 +147,33 @@ export interface Database {
           created_at?: string;
         };
         Update: Record<string, never>;
+        Relationships: Rel[];
+      };
+      shopping_list_items: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          amount: number | null;
+          unit: string | null;
+          checked: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          amount?: number | null;
+          unit?: string | null;
+          checked?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          name?: string;
+          amount?: number | null;
+          unit?: string | null;
+          checked?: boolean;
+        };
         Relationships: Rel[];
       };
     };

@@ -12,7 +12,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { CalendarDays, ChefHat, LayoutGrid, User } from "lucide-react";
+import {
+  CalendarDays,
+  ChefHat,
+  LayoutGrid,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,6 +32,11 @@ const navItems = [
     label: "Wochenplaner",
     href: "/planner",
     icon: CalendarDays,
+  },
+  {
+    label: "Einkaufsliste",
+    href: "/shopping",
+    icon: ShoppingCart,
   },
   {
     label: "Profil",
@@ -50,7 +61,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-2">
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={pathname === item.href}>
