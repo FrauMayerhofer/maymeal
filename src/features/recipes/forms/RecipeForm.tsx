@@ -84,7 +84,10 @@ export function RecipeForm({
   }
 
   return (
-    <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+    <form
+      onSubmit={(e) => form.handleSubmit(handleSubmit)(e)}
+      className="space-y-6"
+    >
       {/* Grundinfo */}
       <Card>
         <CardHeader>
@@ -119,6 +122,7 @@ export function RecipeForm({
                   <Input
                     {...field}
                     id="title"
+                    aria-invalid={fieldState.invalid}
                     placeholder="z.B. Spaghetti Carbonara"
                   />
                   {fieldState.invalid && (
@@ -139,6 +143,7 @@ export function RecipeForm({
                   <Textarea
                     {...field}
                     id="description"
+                    aria-invalid={fieldState.invalid}
                     placeholder="Kurze Beschreibung des Rezepts..."
                   />
                   {fieldState.invalid && (
@@ -157,7 +162,11 @@ export function RecipeForm({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="category">Kategorie</FieldLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      aria-invalid={fieldState.invalid}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
                       <SelectTrigger id="category" className="w-full max-w-48">
                         <SelectValue placeholder="wähle eine Kategorie" />
                       </SelectTrigger>
@@ -184,7 +193,11 @@ export function RecipeForm({
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="difficulty">Schwierigkeit</FieldLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      aria-invalid={fieldState.invalid}
+                      value={field.value}
+                      onValueChange={field.onChange}
+                    >
                       <SelectTrigger
                         id="difficulty"
                         className="w-full max-w-48"
@@ -230,6 +243,7 @@ export function RecipeForm({
                       id="duration"
                       type="number"
                       min={1}
+                      aria-invalid={fieldState.invalid}
                       value={field.value ?? ""}
                       onChange={(e) =>
                         field.onChange(
@@ -253,6 +267,7 @@ export function RecipeForm({
                       id="servings"
                       type="number"
                       min={1}
+                      aria-invalid={fieldState.invalid}
                       value={field.value ?? ""}
                       onChange={(e) => {
                         const value =
@@ -277,6 +292,7 @@ export function RecipeForm({
                       id="calories"
                       type="number"
                       min={0}
+                      aria-invalid={fieldState.invalid}
                       value={field.value ?? ""}
                       onChange={(e) =>
                         field.onChange(
@@ -323,6 +339,7 @@ export function RecipeForm({
                         id={macro}
                         type="number"
                         min={0}
+                        aria-invalid={fieldState.invalid}
                         value={field.value ?? ""}
                         onChange={(e) =>
                           field.onChange(
@@ -358,6 +375,7 @@ export function RecipeForm({
                   <Input
                     {...field}
                     id="tags"
+                    aria-invalid={fieldState.invalid}
                     placeholder="Vegetarisch, Schnell, Proteinreich"
                   />
                   {fieldState.invalid && (
@@ -387,7 +405,11 @@ export function RecipeForm({
                 render={({ field: f, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} className="flex-1">
                     {index === 0 && <FieldLabel>Name</FieldLabel>}
-                    <Input {...f} placeholder="Zutat" />
+                    <Input
+                      {...f}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Zutat"
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -408,6 +430,7 @@ export function RecipeForm({
                       min={0}
                       step="0.1"
                       placeholder="0"
+                      aria-invalid={fieldState.invalid}
                       value={f.value ?? ""}
                       onChange={(e) =>
                         f.onChange(
@@ -430,7 +453,11 @@ export function RecipeForm({
                     className="w-24 shrink-0"
                   >
                     {index === 0 && <FieldLabel>Einheit</FieldLabel>}
-                    <Input {...f} placeholder="g, ml, Stk." />
+                    <Input
+                      {...f}
+                      aria-invalid={fieldState.invalid}
+                      placeholder="g, ml, Stk."
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -490,6 +517,7 @@ export function RecipeForm({
                   <Field data-invalid={fieldState.invalid} className="flex-1">
                     <Textarea
                       {...f}
+                      aria-invalid={fieldState.invalid}
                       placeholder="Schritt beschreiben..."
                       rows={2}
                     />

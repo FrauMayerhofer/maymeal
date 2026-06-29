@@ -18,8 +18,8 @@ export default function RecipePage() {
         </div>
         <Button asChild>
           <Link href="/recipes/new">
-            <Plus className="size-4 mr-1.5" />
-            Neues Rezept
+            <Plus className="size-4 md:mr-1.5" />
+            <span className="hidden md:flex">Neues Rezept</span>
           </Link>
         </Button>
       </div>

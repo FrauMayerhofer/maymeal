@@ -1,11 +1,19 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import { Plus, X, ChefHat, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Plus,
+  X,
+  ChefHat,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +46,7 @@ export function WeeklyPlanner() {
     day: string;
     slot: MealSlot;
   } | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const weekDays = getWeekDays(weekOffset);
   const monday = getMondayOfWeek(weekOffset);
@@ -70,6 +79,10 @@ export function WeeklyPlanner() {
       setDayIndex(0);
     }
   };
+
+  const filteredRecipes = allRecipes.filter((r) =>
+    r.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
 
   const addRecipe = (recipeId: string) => {
     if (!selectingFor) return;
@@ -321,18 +334,42 @@ export function WeeklyPlanner() {
 
       <Dialog
         open={!!selectingFor}
-        onOpenChange={(o) => !o && setSelectingFor(null)}
+        onOpenChange={(o) => {
+          if (!o) {
+            setSelectingFor(null);
+            setSearchQuery("");
+          }
+        }}
       >
         <DialogContent className="sm:max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ChefHat className="size-5" />
-              Rezept auswählen für{" "}
-              {selectingFor && `${selectingFor.day} · ${selectingFor.slot}`}
+              <div className="flex flex-col md:flex-row gap-1">
+                <span>Rezept auswählen für</span>
+                <span>
+                  {selectingFor && `${selectingFor.day} · ${selectingFor.slot}`}
+                </span>
+              </div>
             </DialogTitle>
           </DialogHeader>
+          <div className="relative">
+            <Search className="absolute left-2 ml-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+            <Input
+              placeholder="Rezept suchen…"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+              autoFocus
+            />
+          </div>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {allRecipes.map((recipe) => (
+            {filteredRecipes.length === 0 && (
+              <p className="col-span-full text-center text-sm text-muted-foreground py-8">
+                Keine Rezepte gefunden.
+              </p>
+            )}
+            {filteredRecipes.map((recipe) => (
               <PlannerRecipeCard
                 key={recipe.id}
                 recipe={recipe}

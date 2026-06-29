@@ -14,8 +14,6 @@ export default async function RecipePage({ params }: Props) {
     getUser().catch(() => null),
   ]);
 
-  console.log(user);
-
   if (!recipe) notFound();
 
   return <RecipeDetail recipe={recipe} currentUserId={user?.id} />;

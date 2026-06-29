@@ -28,18 +28,7 @@ export default function AuthLayout({
       </div>
 
       <div className="flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <div className="flex justify-center mb-8 lg:hidden">
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-bold text-xl"
-            >
-              <ChefHat className="h-7 w-7 text-primary" />
-              KochApp
-            </Link>
-          </div>
-          {children}
-        </div>
+        <div className="w-full max-w-md">{children}</div>
       </div>
     </div>
   );
