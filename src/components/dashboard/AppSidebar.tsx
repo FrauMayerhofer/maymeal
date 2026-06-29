@@ -1,0 +1,74 @@
+"use client";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { CalendarDays, ChefHat, LayoutGrid, User } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const navItems = [
+  {
+    label: "Rezepte",
+    href: "/recipes",
+    icon: LayoutGrid,
+  },
+  {
+    label: "Wochenplaner",
+    href: "/planner",
+    icon: CalendarDays,
+  },
+  {
+    label: "Profil",
+    href: "/profile",
+    icon: User,
+  },
+];
+
+export function AppSidebar() {
+  const pathname = usePathname();
+
+  return (
+    <Sidebar>
+      <SidebarHeader className="p-4">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+          <ChefHat className="h-6 w-6 text-primary" />
+          <span>MAYMeal</span>
+        </Link>
+      </SidebarHeader>
+
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton asChild isActive={pathname === item.href}>
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+
+      <SidebarFooter className="p-4 text-xs text-muted-foreground">
+        © 2026 MAYMeal
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
