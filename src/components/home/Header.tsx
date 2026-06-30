@@ -19,7 +19,7 @@ export const HomeHeader = ({ user }: Props) => {
         </div>
         {user ? (
           <Button asChild>
-            <Link href={ROUTES.afterLogin}>Zu den Rezepten</Link>
+            <Link href={ROUTES.afterLogin}>Dashboard</Link>
           </Button>
         ) : (
           <div className="flex items-center gap-2">

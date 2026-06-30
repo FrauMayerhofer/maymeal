@@ -1,14 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
-import {
-  Plus,
-  X,
-  ChefHat,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-} from "lucide-react";
+import { Plus, X, ChefHat, ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PlannerRecipeCard } from "./PlannerRecipeCard";
+import { ShuffleLunchDialog } from "./ShuffleLunchDialog";
 import type { MealSlot } from "../types";
 import {
   DAY_NAMES,
@@ -124,6 +118,15 @@ export function WeeklyPlanner() {
   return (
     <>
       <div className="flex flex-col gap-6">
+        <ShuffleLunchDialog
+          weekDays={weekDays}
+          weekLabel={weekLabel}
+          plan={plan}
+          recipes={allRecipes}
+          add={add}
+          remove={remove}
+        />
+
         {/* Week nav — desktop only */}
         <div className="hidden md:flex items-center justify-between">
           <Button
