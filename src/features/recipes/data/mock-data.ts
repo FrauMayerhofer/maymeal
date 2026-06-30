@@ -1,10 +1,4 @@
-import { MealSlot, Recipe } from "../types";
-
-export const MEAL_SLOTS: MealSlot[] = [
-  "Frühstück",
-  "Mittagessen",
-  "Abendessen",
-];
+import { Recipe } from "../types";
 
 export const RECIPES: Recipe[] = [
   {
@@ -369,4 +363,3 @@ export const RECIPES: Recipe[] = [
     authorId: "mock-author-max",
   },
 ];
-

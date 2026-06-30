@@ -50,7 +50,7 @@ export function ProfileClient({ user }: { user: User }) {
   }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Profil</h1>
         <p className="text-sm text-muted-foreground mt-1">{user.email}</p>

@@ -3,7 +3,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { MealSlot, WeekDay, WeekPlan } from "../types";
-import { mapRecipe, RecipeRow, RECIPE_SELECT } from "../utils/mapRecipe";
+import {
+  mapRecipe,
+  RECIPE_SELECT,
+  RecipeRow,
+} from "@/features/recipes/utils/mapRecipe";
 
 export async function getMealPlan(weekDays: WeekDay[]): Promise<WeekPlan> {
   const cookieStore = await cookies();

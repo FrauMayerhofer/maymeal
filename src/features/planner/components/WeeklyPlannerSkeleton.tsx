@@ -52,10 +52,7 @@ export function WeeklyPlannerSkeleton() {
                   <Skeleton className="h-3 w-14" />
                 </div>
                 {Array.from({ length: DAYS }).map((_, dayIdx) => (
-                  <Skeleton
-                    key={dayIdx}
-                    className="h-16 w-full rounded-lg"
-                  />
+                  <Skeleton key={dayIdx} className="h-16 w-full rounded-lg" />
                 ))}
                 {slotIdx < SLOTS - 1 && (
                   <div className="col-span-8 my-1">

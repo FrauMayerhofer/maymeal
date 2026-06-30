@@ -20,6 +20,7 @@ import {
   ShoppingCart,
   User,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -52,13 +53,16 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-4">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <ChefHat className="h-6 w-6 text-primary" />
-          <span>MAYMeal</span>
+      <SidebarHeader className="px-4">
+        <Link href="/">
+          <Image
+            alt="logo"
+            src="/logo_transparent.svg"
+            width={120}
+            height={120}
+          />
         </Link>
       </SidebarHeader>
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>

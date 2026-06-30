@@ -1,8 +1,8 @@
 "use server";
 
-import { getMealPlan } from "@/features/recipes/actions/getMealPlan";
+import { getMealPlan } from "@/features/planner/actions/getMealPlan";
 import { Ingredient } from "@/features/recipes/types";
-import { getWeekDays } from "@/features/recipes/utils/formatDate";
+import { getWeekDays } from "@/features/planner/utils/formatDate";
 
 export type ImportedIngredient = {
   name: string;
@@ -10,7 +10,9 @@ export type ImportedIngredient = {
   unit: string;
 };
 
-export async function getIngredientsFromMealPlan(): Promise<ImportedIngredient[]> {
+export async function getIngredientsFromMealPlan(): Promise<
+  ImportedIngredient[]
+> {
   const weekDays = getWeekDays(0);
   const plan = await getMealPlan(weekDays);
 

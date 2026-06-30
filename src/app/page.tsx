@@ -1,39 +1,16 @@
 import Link from "next/link";
-import { ChefHat, CalendarDays, BookOpen, ShoppingCart } from "lucide-react";
+import { CalendarDays, BookOpen, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 import getUser from "@/features/auth/actions/getUser";
+import { HomeHeader } from "@/components/home/Header";
 
 export default async function Home() {
   const user = await getUser().catch(() => null);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <header className="border-b">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <ChefHat className="size-4" />
-            </div>
-            <span className="font-bold text-lg">MAYMeal</span>
-          </div>
-          {user ? (
-            <Button asChild>
-              <Link href={ROUTES.afterLogin}>Zu den Rezepten</Link>
-            </Button>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" asChild>
-                <Link href={ROUTES.login}>Anmelden</Link>
-              </Button>
-              <Button asChild>
-                <Link href={ROUTES.register}>Registrieren</Link>
-              </Button>
-            </div>
-          )}
-        </div>
-      </header>
-
+      <HomeHeader user={user} />
       <main className="flex-1">
         {/* Hero */}
         <section className="mx-auto max-w-5xl px-6 py-24 text-center">

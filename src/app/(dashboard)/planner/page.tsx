@@ -1,5 +1,5 @@
-import { WeeklyPlanner } from "@/features/recipes/components/WeeklyPlanner";
-import { WeeklyPlannerSkeleton } from "@/features/recipes/components/WeeklyPlannerSkeleton";
+import { WeeklyPlanner } from "@/features/planner/components/WeeklyPlanner";
+import { WeeklyPlannerSkeleton } from "@/features/planner/components/WeeklyPlannerSkeleton";
 import { Suspense } from "react";
 
 export default function Page() {

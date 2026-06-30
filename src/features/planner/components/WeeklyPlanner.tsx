@@ -21,8 +21,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { PlannerRecipeCard } from "./PlannerRecipeCard";
-import { RecipeImage } from "./RecipeImage";
-import { MEAL_SLOTS } from "../data/mock-data";
 import type { MealSlot } from "../types";
 import {
   DAY_NAMES,
@@ -31,8 +29,11 @@ import {
   getWeekDays,
 } from "../utils/formatDate";
 import { useMealPlan } from "../hooks/useMealPlan";
-import { useGetRecipes } from "../hooks/getRecipes";
 import Link from "next/link";
+import { RecipeImage } from "@/features/recipes/components/RecipeImage";
+import { useGetRecipes } from "@/features/recipes/hooks/getRecipes";
+import { MEAL_SLOTS } from "../constants";
+import { cn } from "@/lib/utils";
 
 function getTodayDayIndex() {
   const day = new Date().getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
@@ -115,37 +116,40 @@ export function WeeklyPlanner() {
     0,
   );
 
+  const currentDayCalories = Object.values(plan[currentDay?.name] ?? {}).reduce(
+    (slotSum, recipes) => slotSum + recipes.reduce((s, r) => s + r.calories, 0),
+    0,
+  );
+
   return (
     <>
       <div className="flex flex-col gap-6">
         {/* Week nav — desktop only */}
         <div className="hidden md:flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">{weekLabel}</p>
-          <div className="flex items-center gap-1">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setWeekOffset((w) => w - 1)}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setWeekOffset((w) => w - 1)}
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <div className="text-center flex-1">
+            <p
+              className={cn(
+                "font-semibold",
+                weekOffset === 0 && "text-primary",
+              )}
             >
-              <ChevronLeft className="size-4" />
-            </Button>
-            {weekOffset !== 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setWeekOffset(0)}
-              >
-                Heute
-              </Button>
-            )}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setWeekOffset((w) => w + 1)}
-            >
-              <ChevronRight className="size-4" />
-            </Button>
+              {weekLabel}
+            </p>
           </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setWeekOffset((w) => w + 1)}
+          >
+            <ChevronRight className="size-4" />
+          </Button>
         </div>
 
         {/* Stats */}
@@ -156,12 +160,20 @@ export function WeeklyPlanner() {
                 Geplante Mahlzeiten
               </p>
               <p className="text-2xl font-bold">{plannedMeals}</p>
-              <p className="text-xs text-muted-foreground">
-                von {DAY_NAMES.length * MEAL_SLOTS.length} möglich
-              </p>
             </CardContent>
           </Card>
           <Card size="sm">
+            <CardContent className="flex flex-col gap-0.5">
+              <p className="text-xs text-muted-foreground">Kcal heute</p>
+              <p className="text-2xl font-bold">
+                {currentDayCalories.toLocaleString("de")}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {currentDay?.name}
+              </p>
+            </CardContent>
+          </Card>
+          <Card size="sm" className="hidden md:flex">
             <CardContent className="flex flex-col gap-0.5">
               <p className="text-xs text-muted-foreground">Kcal diese Woche</p>
               <p className="text-2xl font-bold">
@@ -170,15 +182,6 @@ export function WeeklyPlanner() {
               <p className="text-xs text-muted-foreground">
                 Ø {Math.round(totalCalories / 7)} kcal / Tag
               </p>
-            </CardContent>
-          </Card>
-          <Card size="sm" className="col-span-2 sm:col-span-1">
-            <CardContent className="flex flex-col gap-0.5">
-              <p className="text-xs text-muted-foreground">Freie Slots</p>
-              <p className="text-2xl font-bold">
-                {DAY_NAMES.length * MEAL_SLOTS.length - plannedMeals}
-              </p>
-              <p className="text-xs text-muted-foreground">noch zu planen</p>
             </CardContent>
           </Card>
         </div>
@@ -190,7 +193,14 @@ export function WeeklyPlanner() {
               <ChevronLeft className="size-4" />
             </Button>
             <div className="text-center">
-              <p className="font-semibold">
+              <p
+                className={cn(
+                  "font-semibold",
+                  weekOffset === 0 &&
+                    dayIndex === getTodayDayIndex() &&
+                    "text-primary",
+                )}
+              >
                 {currentDay?.name}, {currentDay?.date}
               </p>
               <p className="text-xs text-muted-foreground">{weekLabel}</p>
@@ -258,14 +268,30 @@ export function WeeklyPlanner() {
             <div className="min-w-175">
               <div className="grid grid-cols-[80px_repeat(7,minmax(0,1fr))] gap-5 overflow-x-scroll">
                 <div />
-                {weekDays.map((day) => (
-                  <div key={day.name} className="text-center">
-                    <p className="text-xs font-semibold text-foreground">
-                      {day.short}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{day.date}</p>
-                  </div>
-                ))}
+                {weekDays.map((day) => {
+                  const isToday =
+                    weekOffset === 0 && day.date === currentDay.date;
+                  return (
+                    <div key={day.name} className="text-center">
+                      <p
+                        className={cn(
+                          "text-xs font-semibold text-foreground",
+                          isToday && "text-primary",
+                        )}
+                      >
+                        {day.short}
+                      </p>
+                      <p
+                        className={cn(
+                          "text-xs text-muted-foreground",
+                          isToday && "text-primary",
+                        )}
+                      >
+                        {day.date}
+                      </p>
+                    </div>
+                  );
+                })}
 
                 {MEAL_SLOTS.map((slot, slotIdx) => (
                   <Fragment key={slot}>

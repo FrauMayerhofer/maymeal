@@ -4,7 +4,7 @@ export type Category =
   | "Abendessen"
   | "Snack"
   | "Dessert";
-export type MealSlot = "Frühstück" | "Mittagessen" | "Abendessen";
+//export type MealSlot = "Frühstück" | "Mittagessen" | "Abendessen";
 
 export interface Ingredient {
   name: string;
@@ -35,12 +35,3 @@ export interface Recipe {
   author: string;
   authorId: string;
 }
-
-export interface WeekDay {
-  name: string;
-  short: string;
-  date: string;
-  isoDate: string; // YYYY-MM-DD, used for DB queries
-}
-
-export type WeekPlan = Record<string, Record<MealSlot, Recipe[]>>;
