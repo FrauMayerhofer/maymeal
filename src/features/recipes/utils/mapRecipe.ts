@@ -20,6 +20,7 @@ export type RecipeRow = {
     amount: number;
     unit: string;
     position: number;
+    section: string | null;
   }[];
   instructions: { step_number: number; content: string }[];
   recipe_tags: { tag: string }[];
@@ -39,7 +40,12 @@ export function mapRecipe(row: RecipeRow): Recipe {
     tags: row.recipe_tags.map((t) => t.tag),
     ingredients: [...row.ingredients]
       .sort((a, b) => a.position - b.position)
-      .map(({ name, amount, unit }) => ({ name, amount, unit })),
+      .map(({ name, amount, unit, section }) => ({
+        name,
+        amount,
+        unit,
+        section,
+      })),
     instructions: [...row.instructions]
       .sort((a, b) => a.step_number - b.step_number)
       .map((i) => i.content),
@@ -51,7 +57,7 @@ export function mapRecipe(row: RecipeRow): Recipe {
 
 export const RECIPE_SELECT = `
   *,
-  ingredients ( name, amount, unit, position ),
+  ingredients ( name, amount, unit, position, section ),
   instructions ( step_number, content ),
   recipe_tags ( tag )
 ` as const;

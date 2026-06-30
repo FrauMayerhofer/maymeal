@@ -14,7 +14,12 @@ export function toPayload(input: RecipeFormInput): RecipePayload {
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean),
-    ingredients: input.ingredients,
+    ingredients: input.ingredients.flatMap((group) =>
+      group.items.map((item) => ({
+        ...item,
+        section: group.section?.trim() || null,
+      })),
+    ),
     instructions: input.instructions.map((i) => i.value),
     macros: { protein: input.protein, carbs: input.carbs, fat: input.fat },
   };

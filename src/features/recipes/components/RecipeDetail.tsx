@@ -4,6 +4,7 @@ import { Recipe } from "../types";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { formatAmount } from "../utils/formatAmount";
+import { groupIngredients } from "../utils/groupIngredients";
 import HeroCard from "./RecipeDetail/HeroCard";
 import MacroCard from "./RecipeDetail/MacroCard";
 import ServingsStepper from "./RecipeDetail/ServingsStepper";
@@ -74,19 +75,30 @@ export function RecipeDetail({ recipe, currentUserId }: RecipeDetailProps) {
                 für {servings} {servings === 1 ? "Portion" : "Portionen"}
               </span>
             </h2>
-            <ul className="space-y-2">
-              {recipe.ingredients.map((ing, i) => (
-                <li
-                  key={i}
-                  className="flex items-baseline justify-between gap-3 rounded-lg px-3 py-2 bg-muted/40 hover:bg-muted/70 transition-colors"
-                >
-                  <span className="text-sm">{ing.name}</span>
-                  <span className="shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
-                    {formatAmount(ing.amount * scale)} {ing.unit}
-                  </span>
-                </li>
+            <div className="space-y-4">
+              {groupIngredients(recipe.ingredients).map((group, gi) => (
+                <div key={gi}>
+                  {group.section && (
+                    <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                      {group.section}
+                    </h3>
+                  )}
+                  <ul className="space-y-2">
+                    {group.items.map((ing, i) => (
+                      <li
+                        key={i}
+                        className="flex items-baseline justify-between gap-3 rounded-lg px-3 py-2 bg-muted/40 hover:bg-muted/70 transition-colors"
+                      >
+                        <span className="text-sm">{ing.name}</span>
+                        <span className="shrink-0 text-sm font-medium tabular-nums text-muted-foreground">
+                          {formatAmount(ing.amount * scale)} {ing.unit}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
           {/* Instructions */}

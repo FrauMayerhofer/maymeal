@@ -1,6 +1,11 @@
 "use client";
 
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -35,6 +40,152 @@ import { ImageUpload } from "../components/ImageUpload";
 
 const DIFFICULTY_OPTIONS = ["Einfach", "Mittel", "Anspruchsvoll"] as const;
 
+interface IngredientSectionFieldsProps {
+  control: Control<RecipeFormInput>;
+  groupIndex: number;
+  showRemoveGroup: boolean;
+  onRemoveGroup: () => void;
+  itemsError?: string;
+}
+
+function IngredientSectionFields({
+  control,
+  groupIndex,
+  showRemoveGroup,
+  onRemoveGroup,
+  itemsError,
+}: IngredientSectionFieldsProps) {
+  const items = useFieldArray({
+    control,
+    name: `ingredients.${groupIndex}.items`,
+  });
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Controller
+          name={`ingredients.${groupIndex}.section`}
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              className="max-w-xs"
+              placeholder="Abschnitt (optional), z.B. Für die Sauce"
+            />
+          )}
+        />
+        {showRemoveGroup && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="shrink-0 text-muted-foreground hover:text-destructive"
+            onClick={onRemoveGroup}
+          >
+            <Trash2 className="size-4" />
+          </Button>
+        )}
+      </div>
+
+      {items.fields.map((field, index) => (
+        <div key={field.id} className="flex items-start gap-2">
+          <span className="mt-2.5 text-xs font-medium text-muted-foreground w-5 text-right shrink-0">
+            {index + 1}.
+          </span>
+          <Controller
+            name={`ingredients.${groupIndex}.items.${index}.name`}
+            control={control}
+            render={({ field: f, fieldState }) => (
+              <Field data-invalid={fieldState.invalid} className="flex-1">
+                {index === 0 && <FieldLabel>Name</FieldLabel>}
+                <Input
+                  {...f}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Zutat"
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Controller
+            name={`ingredients.${groupIndex}.items.${index}.amount`}
+            control={control}
+            render={({ field: f, fieldState }) => (
+              <Field
+                data-invalid={fieldState.invalid}
+                className="w-20 shrink-0"
+              >
+                {index === 0 && <FieldLabel>Menge</FieldLabel>}
+                <Input
+                  type="number"
+                  min={0}
+                  step="0.1"
+                  placeholder="0"
+                  aria-invalid={fieldState.invalid}
+                  value={f.value ?? ""}
+                  onChange={(e) =>
+                    f.onChange(
+                      e.target.value === "" ? 0 : Number(e.target.value),
+                    )
+                  }
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Controller
+            name={`ingredients.${groupIndex}.items.${index}.unit`}
+            control={control}
+            render={({ field: f, fieldState }) => (
+              <Field
+                data-invalid={fieldState.invalid}
+                className="w-24 shrink-0"
+              >
+                {index === 0 && <FieldLabel>Einheit</FieldLabel>}
+                <Input
+                  {...f}
+                  aria-invalid={fieldState.invalid}
+                  placeholder="g, ml, Stk."
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={cn(
+              "shrink-0 text-muted-foreground hover:text-destructive",
+              index === 0 && "mt-6",
+            )}
+            onClick={() => items.remove(index)}
+            disabled={items.fields.length <= 1}
+          >
+            <Trash2 className="size-4" />
+          </Button>
+        </div>
+      ))}
+      {itemsError && <p className="text-sm text-destructive">{itemsError}</p>}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={() => items.append({ name: "", amount: 0, unit: "" })}
+      >
+        <Plus className="size-4 mr-1.5" />
+        Zutat hinzufügen
+      </Button>
+    </div>
+  );
+}
+
 interface RecipeFormProps {
   defaultValues?: RecipeFormInput;
   onSubmit: (payload: RecipePayload, imageFile: File | null) => void;
@@ -62,7 +213,9 @@ export function RecipeForm({
       servings: 2,
       calories: 0,
       tags: "",
-      ingredients: [{ name: "", amount: 0, unit: "" }],
+      ingredients: [
+        { section: "", items: [{ name: "", amount: 0, unit: "" }] },
+      ],
       instructions: [{ value: "" }],
       protein: 0,
       carbs: 0,
@@ -393,90 +546,20 @@ export function RecipeForm({
         <CardHeader>
           <CardTitle className="text-base">Zutaten</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {ingredients.fields.map((field, index) => (
-            <div key={field.id} className="flex items-start gap-2">
-              <span className="mt-2.5 text-xs font-medium text-muted-foreground w-5 text-right shrink-0">
-                {index + 1}.
-              </span>
-              <Controller
-                name={`ingredients.${index}.name`}
+        <CardContent className="space-y-5">
+          {ingredients.fields.map((field, groupIndex) => (
+            <div key={field.id} className="space-y-3">
+              <IngredientSectionFields
                 control={form.control}
-                render={({ field: f, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="flex-1">
-                    {index === 0 && <FieldLabel>Name</FieldLabel>}
-                    <Input
-                      {...f}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="Zutat"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
+                groupIndex={groupIndex}
+                showRemoveGroup={ingredients.fields.length > 1}
+                onRemoveGroup={() => ingredients.remove(groupIndex)}
+                itemsError={
+                  form.formState.errors.ingredients?.[groupIndex]?.items
+                    ?.root?.message
+                }
               />
-              <Controller
-                name={`ingredients.${index}.amount`}
-                control={form.control}
-                render={({ field: f, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="w-20 shrink-0"
-                  >
-                    {index === 0 && <FieldLabel>Menge</FieldLabel>}
-                    <Input
-                      type="number"
-                      min={0}
-                      step="0.1"
-                      placeholder="0"
-                      aria-invalid={fieldState.invalid}
-                      value={f.value ?? ""}
-                      onChange={(e) =>
-                        f.onChange(
-                          e.target.value === "" ? 0 : Number(e.target.value),
-                        )
-                      }
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name={`ingredients.${index}.unit`}
-                control={form.control}
-                render={({ field: f, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="w-24 shrink-0"
-                  >
-                    {index === 0 && <FieldLabel>Einheit</FieldLabel>}
-                    <Input
-                      {...f}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="g, ml, Stk."
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "shrink-0 text-muted-foreground hover:text-destructive",
-                  index === 0 && "mt-6",
-                )}
-                onClick={() => ingredients.remove(index)}
-                disabled={ingredients.fields.length <= 1}
-              >
-                <Trash2 className="size-4" />
-              </Button>
+              {groupIndex < ingredients.fields.length - 1 && <Separator />}
             </div>
           ))}
           {form.formState.errors.ingredients?.root && (
@@ -490,11 +573,14 @@ export function RecipeForm({
             variant="outline"
             size="sm"
             onClick={() =>
-              ingredients.append({ name: "", amount: 0, unit: "" })
+              ingredients.append({
+                section: "",
+                items: [{ name: "", amount: 0, unit: "" }],
+              })
             }
           >
             <Plus className="size-4 mr-1.5" />
-            Zutat hinzufügen
+            Abschnitt hinzufügen
           </Button>
         </CardContent>
       </Card>

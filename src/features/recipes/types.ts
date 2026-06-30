@@ -10,6 +10,7 @@ export interface Ingredient {
   name: string;
   amount: number;
   unit: string;
+  section?: string | null;
 }
 
 export interface Macros {

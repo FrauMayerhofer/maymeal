@@ -27,6 +27,8 @@ DECLARE
   r16 uuid := gen_random_uuid(); -- Lasagne
 BEGIN
 
+TRUNCATE TABLE recipes CASCADE;
+
 -- ============================================================
 -- RECIPES
 -- ============================================================
@@ -69,38 +71,38 @@ INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
 (r01, 13, 'Öl', 1, 'EL');
 
 -- r02: Gnocchi mit Avocado-Basilikum-Pesto
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r02, 1, 'Avocados (reif)', 2, 'Stück'),
-(r02, 2, 'Knoblauchzehen', 2, 'Stück'),
-(r02, 3, 'Basilikum (frisch, grob gehackt)', 2, 'Bund'),
-(r02, 4, 'Zitrone (Saft davon)', 1, 'Stück'),
-(r02, 5, 'Olivenöl', 8, 'EL'),
-(r02, 6, 'Mandeln, gemahlene', 100, 'g'),
-(r02, 7, 'Salz', 1, 'TL'),
-(r02, 8, 'Pfeffer', 0.5, 'TL'),
-(r02, 9, 'Gnocchi', 1200, 'g'),
-(r02, 10, 'Butter (zum Braten)', 30, 'g'),
-(r02, 11, 'Kirschtomaten', 350, 'g'),
-(r02, 12, 'Zucker', 2, 'Prise'),
-(r02, 13, 'Parmesan, frisch gerieben', 100, 'g');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r02, 1, 'Avocados (reif)', 2, 'Stück', 'Für das Pesto'),
+(r02, 2, 'Knoblauchzehen', 2, 'Stück', 'Für das Pesto'),
+(r02, 3, 'Basilikum (frisch, grob gehackt)', 2, 'Bund', 'Für das Pesto'),
+(r02, 4, 'Zitrone (Saft davon)', 1, 'Stück', 'Für das Pesto'),
+(r02, 5, 'Olivenöl', 8, 'EL', 'Für das Pesto'),
+(r02, 6, 'Mandeln, gemahlene', 100, 'g', 'Für das Pesto'),
+(r02, 7, 'Salz', 1, 'TL', 'Für das Pesto'),
+(r02, 8, 'Pfeffer', 0.5, 'TL', 'Für das Pesto'),
+(r02, 9, 'Gnocchi', 1200, 'g', 'Für die Gnocchi'),
+(r02, 10, 'Butter (zum Braten)', 30, 'g', 'Für die Gnocchi'),
+(r02, 11, 'Kirschtomaten', 350, 'g', 'Für die Gnocchi'),
+(r02, 12, 'Zucker', 2, 'Prise', 'Für die Gnocchi'),
+(r02, 13, 'Parmesan, frisch gerieben', 100, 'g', 'Für die Gnocchi');
 
 -- r03: Flammkuchen Elsässer Art, süß oder herzhaft
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r03, 1, 'Mehl', 300, 'g'),
-(r03, 2, 'Mineralwasser (mit Kohlensäure)', 125, 'ml'),
-(r03, 3, 'Öl (geschmacksneutral)', 4, 'EL'),
-(r03, 4, 'Salz', 1, 'Prise'),
-(r03, 5, 'Fett für das Blech', 1, 'EL'),
-(r03, 6, 'Crème fraîche oder Schmand (herzhafter Belag)', 1, 'Becher'),
-(r03, 7, 'Milch oder Sahne (herzhafter Belag)', 50, 'ml'),
-(r03, 8, 'Speck oder Katenschinken', 150, 'g'),
-(r03, 9, 'Zwiebel (groß)', 1, 'Stück'),
-(r03, 10, 'Crème fraîche oder Schmand (süßer Belag)', 1, 'Becher'),
-(r03, 11, 'Milch oder Sahne (süßer Belag)', 50, 'ml'),
-(r03, 12, 'Äpfel (z. B. Boskoop)', 2, 'Stück'),
-(r03, 13, 'Zitronensaft', 1, 'EL'),
-(r03, 14, 'Zimtzucker', 80, 'g'),
-(r03, 15, 'Mandelblättchen', 50, 'g');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r03, 1, 'Mehl', 300, 'g', 'Für den Teig'),
+(r03, 2, 'Mineralwasser (mit Kohlensäure)', 125, 'ml', 'Für den Teig'),
+(r03, 3, 'Öl (geschmacksneutral)', 4, 'EL', 'Für den Teig'),
+(r03, 4, 'Salz', 1, 'Prise', 'Für den Teig'),
+(r03, 5, 'Fett für das Blech', 1, 'EL', 'Für den Teig'),
+(r03, 6, 'Crème fraîche oder Schmand', 1, 'Becher', 'Für den Belag (salzig)'),
+(r03, 7, 'Milch oder Sahne', 50, 'ml', 'Für den Belag (salzig)'),
+(r03, 8, 'Speck oder Katenschinken', 150, 'g', 'Für den Belag (salzig)'),
+(r03, 9, 'Zwiebel (groß)', 1, 'Stück', 'Für den Belag (salzig)'),
+(r03, 10, 'Crème fraîche oder Schmand', 1, 'Becher', 'Für den Belag (süß)'),
+(r03, 11, 'Milch oder Sahne', 50, 'ml', 'Für den Belag (süß)'),
+(r03, 12, 'Äpfel (z. B. Boskoop)', 2, 'Stück', 'Für den Belag (süß)'),
+(r03, 13, 'Zitronensaft', 1, 'EL', 'Für den Belag (süß)'),
+(r03, 14, 'Zimtzucker', 80, 'g', 'Für den Belag (süß)'),
+(r03, 15, 'Mandelblättchen', 50, 'g', 'Für den Belag (süß)');
 
 -- r04: Kartoffelgratin
 INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
@@ -162,27 +164,27 @@ INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
 (r08, 9, 'Fett für das Waffeleisen', 1, 'EL');
 
 -- r09: Indisches Butter Chicken aus dem Ofen
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r09, 1, 'Hähnchenbrust', 500, 'g'),
-(r09, 2, 'Paprikapulver', 1, 'TL'),
-(r09, 3, 'Limonensaft oder Zitronensaft', 1, 'EL'),
-(r09, 4, 'Salz', 1, 'TL'),
-(r09, 5, 'Joghurt', 150, 'g'),
-(r09, 6, 'Cayennepfeffer', 1, 'TL'),
-(r09, 7, 'Garam Masala', 1, 'EL'),
-(r09, 8, 'Knoblauchzehe', 1, 'Stück'),
-(r09, 9, 'Ingwer (daumengroßes Stück)', 1, 'Stück'),
-(r09, 10, 'Butter', 4, 'EL'),
-(r09, 11, 'Zwiebel', 1, 'Stück'),
-(r09, 12, 'Tomaten, passierte', 500, 'g'),
-(r09, 13, 'Zimt', 1, 'TL'),
-(r09, 14, 'Salz (für die Sauce)', 1, 'TL'),
-(r09, 15, 'Cayennepfeffer (für die Sauce)', 2, 'TL'),
-(r09, 16, 'Ingwer, für die Sauce (daumengroßes Stück)', 1, 'Stück'),
-(r09, 17, 'Knoblauchzehe (für die Sauce)', 1, 'Stück'),
-(r09, 18, 'Honig', 1, 'EL'),
-(r09, 19, 'Sahne', 150, 'ml'),
-(r09, 20, 'Korianderblätter (optional)', 1, 'Bund');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r09, 1, 'Hähnchenbrust', 500, 'g', 'Für das Fleisch und die Marinade'),
+(r09, 2, 'Paprikapulver', 1, 'TL', 'Für das Fleisch und die Marinade'),
+(r09, 3, 'Limonensaft oder Zitronensaft', 1, 'EL', 'Für das Fleisch und die Marinade'),
+(r09, 4, 'Salz', 1, 'TL', 'Für das Fleisch und die Marinade'),
+(r09, 5, 'Joghurt', 150, 'g', 'Für das Fleisch und die Marinade'),
+(r09, 6, 'Cayennepfeffer', 1, 'TL', 'Für das Fleisch und die Marinade'),
+(r09, 7, 'Garam Masala', 1, 'EL', 'Für das Fleisch und die Marinade'),
+(r09, 8, 'Knoblauchzehe', 1, 'Stück', 'Für das Fleisch und die Marinade'),
+(r09, 9, 'Ingwer (daumengroßes Stück)', 1, 'Stück', 'Für das Fleisch und die Marinade'),
+(r09, 10, 'Butter', 4, 'EL', 'Für die Sauce'),
+(r09, 11, 'Zwiebel', 1, 'Stück', 'Für die Sauce'),
+(r09, 12, 'Tomaten, passierte', 500, 'g', 'Für die Sauce'),
+(r09, 13, 'Zimt', 1, 'TL', 'Für die Sauce'),
+(r09, 14, 'Salz', 1, 'TL', 'Für die Sauce'),
+(r09, 15, 'Cayennepfeffer', 2, 'TL', 'Für die Sauce'),
+(r09, 16, 'Ingwer (daumengroßes Stück)', 1, 'Stück', 'Für die Sauce'),
+(r09, 17, 'Knoblauchzehe', 1, 'Stück', 'Für die Sauce'),
+(r09, 18, 'Honig', 1, 'EL', 'Für die Sauce'),
+(r09, 19, 'Sahne', 150, 'ml', 'Für die Sauce'),
+(r09, 20, 'Korianderblätter (optional)', 1, 'Bund', 'Für die Sauce');
 
 -- r10: Indisches Naan Brot
 INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
@@ -198,52 +200,52 @@ INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
 (r10, 10, 'Mehl zum Ausrollen', 2, 'EL');
 
 -- r11: Russischer Zupfkuchen
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r11, 1, 'Mehl', 300, 'g'),
-(r11, 2, 'Kakaopulver, ungesüßt', 30, 'g'),
-(r11, 3, 'Backpulver', 2, 'TL'),
-(r11, 4, 'Zucker', 150, 'g'),
-(r11, 5, 'Vanillezucker', 1, 'Pck'),
-(r11, 6, 'Ei', 1, 'Stück'),
-(r11, 7, 'Butter', 150, 'g'),
-(r11, 8, 'Fett für die Form', 10, 'g'),
-(r11, 9, 'Butter (für die Füllung)', 250, 'g'),
-(r11, 10, 'Magerquark', 500, 'g'),
-(r11, 11, 'Zucker (für die Füllung)', 200, 'g'),
-(r11, 12, 'Vanillezucker (für die Füllung)', 1, 'Pck'),
-(r11, 13, 'Eier (für die Füllung)', 3, 'Stück'),
-(r11, 14, 'Vanillepuddingpulver', 1, 'Pck'),
-(r11, 15, 'Vanilleschote (Mark davon)', 1, 'Stück');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r11, 1, 'Mehl', 300, 'g', 'Für den Teig'),
+(r11, 2, 'Kakaopulver, ungesüßt', 30, 'g', 'Für den Teig'),
+(r11, 3, 'Backpulver', 2, 'TL', 'Für den Teig'),
+(r11, 4, 'Zucker', 150, 'g', 'Für den Teig'),
+(r11, 5, 'Vanillezucker', 1, 'Pck', 'Für den Teig'),
+(r11, 6, 'Ei', 1, 'Stück', 'Für den Teig'),
+(r11, 7, 'Butter', 150, 'g', 'Für den Teig'),
+(r11, 8, 'Fett für die Form', 10, 'g', 'Für den Teig'),
+(r11, 9, 'Butter', 250, 'g', 'Für die Füllung'),
+(r11, 10, 'Magerquark', 500, 'g', 'Für die Füllung'),
+(r11, 11, 'Zucker', 200, 'g', 'Für die Füllung'),
+(r11, 12, 'Vanillezucker', 1, 'Pck', 'Für die Füllung'),
+(r11, 13, 'Eier', 3, 'Stück', 'Für die Füllung'),
+(r11, 14, 'Vanillepuddingpulver', 1, 'Pck', 'Für die Füllung'),
+(r11, 15, 'Vanilleschote (Mark davon)', 1, 'Stück', 'Für die Füllung');
 
 -- r12: Königsberger Klopse
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r12, 1, 'Brötchen, altbacken', 1, 'Stück'),
-(r12, 2, 'Wasser oder Milch zum Einweichen', 100, 'ml'),
-(r12, 3, 'Zwiebel (groß)', 1, 'Stück'),
-(r12, 4, 'Rinderhackfleisch', 250, 'g'),
-(r12, 5, 'Schweinehackfleisch', 250, 'g'),
-(r12, 6, 'Eier', 2, 'Stück'),
-(r12, 7, 'Salz', 1, 'TL'),
-(r12, 8, 'Pfeffer', 0.5, 'TL'),
-(r12, 9, 'Sardellenpaste (optional)', 1, 'TL'),
-(r12, 10, 'Paniermehl (optional)', 2, 'EL'),
-(r12, 11, 'Zwiebel, für die Brühe (groß)', 1, 'Stück'),
-(r12, 12, 'Fleischbrühe, klare', 1000, 'ml'),
-(r12, 13, 'Lorbeerblatt', 1, 'Stück'),
-(r12, 14, 'Pimentkörner', 3, 'Stück'),
-(r12, 15, 'Pfefferkörner', 3, 'Stück'),
-(r12, 16, 'Salz (für die Brühe, nach Bedarf)', 1, 'TL'),
-(r12, 17, 'Kapern', 1, 'Glas'),
-(r12, 18, 'Margarine oder Butter', 3, 'EL'),
-(r12, 19, 'Mehl', 2, 'EL'),
-(r12, 20, 'Brühe (vom Kochen der Klopse)', 375, 'ml'),
-(r12, 21, 'Sahne', 125, 'ml'),
-(r12, 22, 'Zitronensaft', 1, 'EL'),
-(r12, 23, 'Zucker', 1, 'TL'),
-(r12, 24, 'Salz (für die Sauce)', 0.5, 'TL'),
-(r12, 25, 'Pfeffer (für die Sauce)', 0.25, 'TL'),
-(r12, 26, 'Eigelb', 1, 'Stück'),
-(r12, 27, 'Petersilie (zum Garnieren)', 1, 'Bund');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r12, 1, 'Brötchen, altbacken', 1, 'Stück', 'Für die Klopse'),
+(r12, 2, 'Wasser oder Milch zum Einweichen', 100, 'ml', 'Für die Klopse'),
+(r12, 3, 'Zwiebel (groß)', 1, 'Stück', 'Für die Klopse'),
+(r12, 4, 'Rinderhackfleisch', 250, 'g', 'Für die Klopse'),
+(r12, 5, 'Schweinehackfleisch', 250, 'g', 'Für die Klopse'),
+(r12, 6, 'Eier', 2, 'Stück', 'Für die Klopse'),
+(r12, 7, 'Salz', 1, 'TL', 'Für die Klopse'),
+(r12, 8, 'Pfeffer', 0.5, 'TL', 'Für die Klopse'),
+(r12, 9, 'Sardellenpaste (optional)', 1, 'TL', 'Für die Klopse'),
+(r12, 10, 'Paniermehl (optional)', 2, 'EL', 'Für die Klopse'),
+(r12, 11, 'Zwiebel (groß)', 1, 'Stück', 'Für die Brühe'),
+(r12, 12, 'Fleischbrühe, klare', 1000, 'ml', 'Für die Brühe'),
+(r12, 13, 'Lorbeerblatt', 1, 'Stück', 'Für die Brühe'),
+(r12, 14, 'Pimentkörner', 3, 'Stück', 'Für die Brühe'),
+(r12, 15, 'Pfefferkörner', 3, 'Stück', 'Für die Brühe'),
+(r12, 16, 'Salz (nach Bedarf)', 1, 'TL', 'Für die Brühe'),
+(r12, 17, 'Kapern', 1, 'Glas', 'Für die Sauce'),
+(r12, 18, 'Margarine oder Butter', 3, 'EL', 'Für die Sauce'),
+(r12, 19, 'Mehl', 2, 'EL', 'Für die Sauce'),
+(r12, 20, 'Brühe (vom Kochen der Klopse)', 375, 'ml', 'Für die Sauce'),
+(r12, 21, 'Sahne', 125, 'ml', 'Für die Sauce'),
+(r12, 22, 'Zitronensaft', 1, 'EL', 'Für die Sauce'),
+(r12, 23, 'Zucker', 1, 'TL', 'Für die Sauce'),
+(r12, 24, 'Salz', 0.5, 'TL', 'Für die Sauce'),
+(r12, 25, 'Pfeffer', 0.25, 'TL', 'Für die Sauce'),
+(r12, 26, 'Eigelb', 1, 'Stück', 'Für die Sauce'),
+(r12, 27, 'Petersilie (zum Garnieren)', 1, 'Bund', 'Für die Sauce');
 
 -- r13: Gnocchi-Spinat-Auflauf mit Hähnchen und Curry
 INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
@@ -285,28 +287,28 @@ INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
 (r15, 5, 'Vanillezucker', 1, 'Pck');
 
 -- r16: Lasagne
-INSERT INTO ingredients (recipe_id, position, name, amount, unit) VALUES
-(r16, 1, 'Zwiebel', 1, 'Stück'),
-(r16, 2, 'Knoblauchzehen', 2, 'Stück'),
-(r16, 3, 'Petersilie', 1, 'Bund'),
-(r16, 4, 'Olivenöl', 2, 'EL'),
-(r16, 5, 'Hackfleisch (Rind und Schwein gemischt)', 500, 'g'),
-(r16, 6, 'Tomatenmark', 1, 'EL'),
-(r16, 7, 'Tomaten, geschälte (Dose)', 800, 'g'),
-(r16, 8, 'Rotwein', 75, 'ml'),
-(r16, 9, 'Salz', 1, 'TL'),
-(r16, 10, 'Pfeffer', 0.5, 'TL'),
-(r16, 11, 'Butter (für die Béchamelsauce)', 30, 'g'),
-(r16, 12, 'Mehl (für die Béchamelsauce)', 40, 'g'),
-(r16, 13, 'Milch', 500, 'ml'),
-(r16, 14, 'Salz (für die Béchamelsauce)', 0.5, 'TL'),
-(r16, 15, 'Pfeffer (für die Béchamelsauce)', 0.25, 'TL'),
-(r16, 16, 'Zitronensaft', 2, 'TL'),
-(r16, 17, 'Muskat, frisch gerieben', 1, 'Prise'),
-(r16, 18, 'Fett für die Form', 1, 'EL'),
-(r16, 19, 'Lasagneplatten', 300, 'g'),
-(r16, 20, 'Käse, gerieben (z. B. Gouda, Emmentaler oder Mozzarella)', 200, 'g'),
-(r16, 21, 'Butter, in Flocken', 20, 'g');
+INSERT INTO ingredients (recipe_id, position, name, amount, unit, section) VALUES
+(r16, 1, 'Zwiebel', 1, 'Stück', 'Für die Bolognese'),
+(r16, 2, 'Knoblauchzehen', 2, 'Stück', 'Für die Bolognese'),
+(r16, 3, 'Petersilie', 1, 'Bund', 'Für die Bolognese'),
+(r16, 4, 'Olivenöl', 2, 'EL', 'Für die Bolognese'),
+(r16, 5, 'Hackfleisch (Rind und Schwein gemischt)', 500, 'g', 'Für die Bolognese'),
+(r16, 6, 'Tomatenmark', 1, 'EL', 'Für die Bolognese'),
+(r16, 7, 'Tomaten, geschälte (Dose)', 800, 'g', 'Für die Bolognese'),
+(r16, 8, 'Rotwein', 75, 'ml', 'Für die Bolognese'),
+(r16, 9, 'Salz', 1, 'TL', 'Für die Bolognese'),
+(r16, 10, 'Pfeffer', 0.5, 'TL', 'Für die Bolognese'),
+(r16, 11, 'Butter', 30, 'g', 'Für die Béchamelsauce'),
+(r16, 12, 'Mehl', 40, 'g', 'Für die Béchamelsauce'),
+(r16, 13, 'Milch', 500, 'ml', 'Für die Béchamelsauce'),
+(r16, 14, 'Salz', 0.5, 'TL', 'Für die Béchamelsauce'),
+(r16, 15, 'Pfeffer', 0.25, 'TL', 'Für die Béchamelsauce'),
+(r16, 16, 'Zitronensaft', 2, 'TL', 'Für die Béchamelsauce'),
+(r16, 17, 'Muskat, frisch gerieben', 1, 'Prise', 'Für die Béchamelsauce'),
+(r16, 18, 'Fett für die Form', 1, 'EL', 'Außerdem'),
+(r16, 19, 'Lasagneplatten', 300, 'g', 'Außerdem'),
+(r16, 20, 'Käse, gerieben (z. B. Gouda, Emmentaler oder Mozzarella)', 200, 'g', 'Außerdem'),
+(r16, 21, 'Butter, in Flocken', 20, 'g', 'Außerdem');
 
 -- ============================================================
 -- INSTRUCTIONS

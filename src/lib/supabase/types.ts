@@ -81,6 +81,7 @@ export interface Database {
           name: string;
           amount: number;
           unit: string;
+          section: string | null;
         };
         Insert: {
           id?: string;
@@ -89,12 +90,14 @@ export interface Database {
           name: string;
           amount: number;
           unit: string;
+          section?: string | null;
         };
         Update: {
           position?: number;
           name?: string;
           amount?: number;
           unit?: string;
+          section?: string | null;
         };
         Relationships: Rel[];
       };

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Recipe } from "../../types";
 import { formatAmount } from "../../utils/formatAmount";
+import { groupIngredients } from "../../utils/groupIngredients";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Check, Share2 } from "lucide-react";
@@ -22,12 +23,17 @@ export default function ShareButton({
 
   function buildShareText() {
     const url = `${process.env.NEXT_PUBLIC_URL}/recipes/${recipe.id}`;
-    const ingredientLines = recipe.ingredients
-      .map(
-        (ing) =>
-          `• ${formatAmount(ing.amount * scale)} ${ing.unit} ${ing.name}`,
-      )
-      .join("\n");
+    const ingredientLines = groupIngredients(recipe.ingredients)
+      .map((group) => {
+        const lines = group.items
+          .map(
+            (ing) =>
+              `• ${formatAmount(ing.amount * scale)} ${ing.unit} ${ing.name}`,
+          )
+          .join("\n");
+        return group.section ? `${group.section}:\n${lines}` : lines;
+      })
+      .join("\n\n");
     const instructionLines = recipe.instructions
       .map((step, i) => `${i + 1}. ${step}`)
       .join("\n");

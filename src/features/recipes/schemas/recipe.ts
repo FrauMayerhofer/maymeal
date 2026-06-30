@@ -20,12 +20,19 @@ export const recipeFormSchema = z.object({
   ingredients: z
     .array(
       z.object({
-        name: z.string().min(1, "Name erforderlich"),
-        amount: z.number().min(0, "Muss ≥ 0 sein"),
-        unit: z.string().min(1, "Einheit erforderlich"),
+        section: z.string().optional(),
+        items: z
+          .array(
+            z.object({
+              name: z.string().min(1, "Name erforderlich"),
+              amount: z.number().min(0, "Muss ≥ 0 sein"),
+              unit: z.string().min(1, "Einheit erforderlich"),
+            }),
+          )
+          .min(1, "Min. 1 Zutat"),
       }),
     )
-    .min(1, "Min. 1 Zutat"),
+    .min(1, "Min. 1 Abschnitt"),
   instructions: z
     .array(z.object({ value: z.string().min(5, "Min. 5 Zeichen") }))
     .min(1, "Min. 1 Schritt"),

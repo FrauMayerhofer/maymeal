@@ -52,6 +52,7 @@ export async function editRecipe(
             name: ing.name,
             amount: ing.amount,
             unit: ing.unit,
+            section: ing.section ?? null,
             position: i,
           })),
         )

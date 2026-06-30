@@ -1,5 +1,6 @@
 import { RecipeFormInput } from "../schemas/recipe";
 import { Recipe } from "../types";
+import { groupIngredients } from "./groupIngredients";
 
 export function toFormDefaults(recipe: Recipe): RecipeFormInput {
   return {
@@ -12,7 +13,14 @@ export function toFormDefaults(recipe: Recipe): RecipeFormInput {
     servings: recipe.servings,
     calories: recipe.calories,
     tags: recipe.tags.join(", "),
-    ingredients: recipe.ingredients,
+    ingredients: groupIngredients(recipe.ingredients).map((group) => ({
+      section: group.section,
+      items: group.items.map(({ name, amount, unit }) => ({
+        name,
+        amount,
+        unit,
+      })),
+    })),
     instructions: recipe.instructions.map((v) => ({ value: v })),
     protein: recipe.macros.protein,
     carbs: recipe.macros.carbs,

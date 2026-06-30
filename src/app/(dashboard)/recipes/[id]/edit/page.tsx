@@ -20,7 +20,7 @@ export default async function EditRecipePage({ params }: Props) {
   if (!user || user.id !== recipe.authorId) redirect(`/recipes/${id}`);
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="mx-auto">
       <Link
         href={`/recipes/${id}`}
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
@@ -28,9 +28,7 @@ export default async function EditRecipePage({ params }: Props) {
         <ArrowLeft className="size-4" />
         Zurück zum Rezept
       </Link>
-      <h1 className="text-2xl font-bold mb-6">
-        {recipe.title} bearbeiten
-      </h1>
+      <h1 className="text-2xl font-bold mb-6">{recipe.title} bearbeiten</h1>
       <EditRecipeForm recipe={recipe} />
     </div>
   );

@@ -48,6 +48,7 @@ export async function createRecipe(payload: RecipePayload): Promise<Recipe> {
               name: ing.name,
               amount: ing.amount,
               unit: ing.unit,
+              section: ing.section ?? null,
               position: i,
             })),
           )
